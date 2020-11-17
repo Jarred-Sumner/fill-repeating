@@ -1,0 +1,33 @@
+{
+  "name": "fill-repeating",
+  "version": "1.0.2",
+  "main": "fillRepeating-cjs.js",
+  "files": [
+    "index.js",
+    "fillRepeating-cjs.js",
+    "fillRepeating-esm.js",
+    "fillRepeating-iife.js",
+    "types.d.ts"
+  ],
+  "license": "MIT",
+  "types": "types.d.ts",
+  "browser": "fillRepeating-esm.js",
+  "scripts": {
+    "build-cjs": "esbuild fillRepeating.ts --format=cjs --outfile=./fillRepeating-cjs.js",
+    "build-esm": "esbuild fillRepeating.ts --format=esm --minify-whitespace --minify-syntax --outfile=./fillRepeating-esm.js",
+    "build-iife": "esbuild fillRepeating.ts --format=cjs --outfile=./fillRepeating-iife.js",
+    "types": "tsc --emitDeclarationOnly --declaration ./fillRepeating.ts && mv fillRepeating.d.ts ./types.d.ts",
+    "codegen": "atbuild ./fillRepeating.@ts fillRepeating.ts --no-types",
+    "build": "yarn --silent build-cjs && yarn --silent build-esm && yarn --silent build-iife && yarn types",
+    "prebuild": "yarn --silent codegen",
+    "test": "jest"
+  },
+  "devDependencies": {
+    "@types/jest": "^26.0.15",
+    "atbuild": "^1.5.17",
+    "benchmark": "^2.1.4",
+    "esbuild": "latest",
+    "jest": "^26.6.3",
+    "typescript": "^4.0.5"
+  }
+}

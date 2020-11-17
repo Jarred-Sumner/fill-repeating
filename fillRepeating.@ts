@@ -1,0 +1,59 @@
+
+@run
+export function fillRepeating(
+  dstBuffer: number[] | Int8Array | Int16Array | Int32Array | Uint8ClampedArray | Uint32Array | Uint32Array | Uint32Array | Float32Array | Float64Array | BigUint64Array | BigInt64Array,
+  start: number,
+  end: number
+) {
+  let len = dstBuffer.length, // important: use indices length, not byte-length
+    sLen = end - start,
+    p = sLen; // set initial position = source sequence length
+
+  // step 2: copy existing data doubling segment length per iteration
+  while (p < len) {
+    if (p + sLen > len) sLen = len - p; // if not power of 2, truncate last segment
+    dstBuffer.copyWithin(p, start, sLen); // internal copy
+    p += sLen; // add current length to offset
+    sLen <<= 1; // double length for next segment
+  }
+}
+@end
+
+@build
+  const ARRAY_TYPES = [
+    ["Int8Array", "Int8"],
+    ["Int16Array", "Int16"],
+    ["Int32Array", "Int32"],
+    ["Uint8ClampedArray", "Uint8Clamped"],
+    ["Uint32Array", "UInt8"],
+    ["Uint32Array", "UInt16"],
+    ["Uint32Array", "UInt32"],
+    ["Float32Array", "Float32"],
+    ["Float64Array", "Float64"],
+    ["BigUint64Array", "BigUint64"],
+    ["BigInt64Array", "BigInt64"],
+  ];
+
+  for (let [ArrayType, Name] of ARRAY_TYPES) {
+    @run
+      export function fillRepeating@(Name)(
+        dstBuffer: @(ArrayType),
+        start: number,
+        end: number
+      ) {
+        let len = dstBuffer.length, // important: use indices length, not byte-length
+          sLen = end - start,
+          p = sLen; // set initial position = source sequence length
+
+        // step 2: copy existing data doubling segment length per iteration
+        while (p < len) {
+          if (p + sLen > len) sLen = len - p; // if not power of 2, truncate last segment
+          dstBuffer.copyWithin(p, start, sLen); // internal copy
+          p += sLen; // add current length to offset
+          sLen <<= 1; // double length for next segment
+        }
+      }
+    @end
+  }
+@end
+
