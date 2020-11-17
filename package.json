@@ -9,6 +9,7 @@
     "fillRepeating-iife.js",
     "types.d.ts"
   ],
+  "repository": "github:Jarred-Sumner/fill-repeating",
   "license": "MIT",
   "types": "types.d.ts",
   "browser": "fillRepeating-esm.js",
